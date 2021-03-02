@@ -14,22 +14,7 @@ void encoder_update_user(uint8_t index, bool clockwise) {
 
 enum {
   TD_RGB = 0,
-  TD_AT = 0,
-  AT_ADN = SAFE_RANGE
-};
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-    case AT_ADN:
-        if (record->event.pressed) {
-            // when keycode AT_ADN is pressed
-            SEND_STRING("");
-        } else {
-            // when keycode QMKBEST is released
-        }
-        break;
-    }
-    return true;
+  TD_AT = 0
 };
 
 void dance_rgb_finished (qk_tap_dance_state_t *state, void *user_data) {
@@ -42,26 +27,28 @@ void dance_rgb_finished (qk_tap_dance_state_t *state, void *user_data) {
     rgblight_step();
   }
 }
-void dance_rgb_finished2 (qk_tap_dance_state_t *state, void *user_data) {
+void dance_media_stop_key (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
-    register_code (KC_MEDIA_NEXT_TRACK);
-	  unregister_code (KC_MEDIA_NEXT_TRACK);
+    register_code (KC_MEDIA_STOP);
+	  unregister_code (KC_MEDIA_STOP);
   } else if (state->count == 2) {
-    rgblight_toggle();
-  } else if (state->count == 3) {
-    rgblight_step();
+    // when keycode ATLASSIAN_ADN is pressed
+    SEND_STRING("");
+    wait_ms(1);
+    register_code(KC_ENT);
+    unregister_code (KC_ENT);
   }
 }
 
 //All tap dance functions would go here. Only showing this one.
 qk_tap_dance_action_t tap_dance_actions[] = {
  [TD_RGB] = ACTION_TAP_DANCE_FN_ADVANCED (NULL, dance_rgb_finished, NULL),
- [TD_AT] = ACTION_TAP_DANCE_FN_ADVANCED (NULL, dance_rgb_finished2, NULL)
+ [TD_AT] = ACTION_TAP_DANCE_FN_ADVANCED (NULL, dance_media_stop_key, NULL)
 };
 
 //
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = { //buttion closest to usb is first
   [_MAIN] = LAYOUT(
-     KC_MUTE, KC_MEDIA_PREV_TRACK, KC_MEDIA_PLAY_PAUSE, AT_ADN, TD(TD_RGB)
+     KC_MUTE, KC_MEDIA_PREV_TRACK, KC_MEDIA_PLAY_PAUSE, TD(TD_AT), TD(TD_RGB)
   )
 };
