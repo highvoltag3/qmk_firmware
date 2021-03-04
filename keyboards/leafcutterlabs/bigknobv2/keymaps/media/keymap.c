@@ -34,9 +34,9 @@ void dance_media_stop_key (qk_tap_dance_state_t *state, void *user_data) {
   } else if (state->count == 2) {
     // when keycode ATLASSIAN_ADN is pressed
     SEND_STRING("");
-    wait_ms(1);
-    register_code(KC_ENT);
-    unregister_code (KC_ENT);
+    // wait_ms(1);
+    // register_code(KC_ENT);
+    // unregister_code (KC_ENT);
   }
 }
 
